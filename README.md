@@ -1,4 +1,4 @@
-# Fabio-Tran-Projects-
+# Fabio-Tran-Projects
 Collection of my coding contributions 
 
 Contact information:
