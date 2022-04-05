@@ -1,0 +1,102 @@
+---
+title: 'Homework #7'
+author: "Fabio Tran"
+date: "3/23/2022"
+output: html_document
+---
+
+## Question 2
+My work for this question was done on a Google Document.
+
+[Link to Google Document](https://docs.google.com/document/d/1YmtJxVWigUZ03VDMzzwcX_bBrWd_9Yp2mKB3szaR4_U/edit?usp=sharing)
+
+## Question 7
+
+```{r}
+library("ISLR2")
+data("Auto")
+```
+
+**Part A**
+
+```{r}
+mpg_median = median(Auto$mpg)
+mpg01 = ifelse(Auto$mpg > mpg_median, 1, 0)
+Auto$mpg01 = as.factor(mpg01)
+Auto$name = NULL
+```
+
+**Part B**
+
+```{r}
+library(e1071)
+set.seed(1)
+cv_linear = tune(svm, mpg01 ~ . -mpg, data = Auto, kernel = "linear",  ranges = list(cost = c(0.001, 0.01, 0.1, 1, 5, 10, 100)))
+summary(cv_linear)
+best_model = cv_linear$best.model
+summary(best_model)
+```
+
+When cost equals 0.001 the cross validation error is 0.13525641.
+
+When cost equals 0.01 the cross validation error is 0.08923077.
+
+When cost equals 0.1 the cross validation error is 0.09185897.
+
+When cost equals 1 the cross validation error is 0.08435897.
+
+When cost equals 5 the cross validation error is 0.08948718.
+
+When cost equals 10 the cross validation error is 0.08948718.
+
+When cost equals 100 the cross validation error is 0.08692308.
+
+The best value for the cost parameter is 1 because in the model it yields the lowest cross validation error of 0.08435897. This cost value has 88 support vectors associated with it.
+
+**Part C**
+
+```{r}
+set.seed(2)
+cv_polynomial = tune(svm, mpg01 ~ . -mpg , data = Auto, kernel = "polynomial", ranges = list(cost = c(0.001, 0.01, 0.1, 1,5,10), degree = c(2,3,4)))
+summary(cv_polynomial)
+
+set.seed(3)
+cv_radial = tune(svm, mpg01 ~ . -mpg , data = Auto, kernel = "radial", ranges = list(cost = c(0.001, 0.01, 0.1, 1, 5, 10), gamma = c(0.001, 0.01, 0.1, 1, 5, 10)))
+summary(cv_radial)
+```
+
+When kernel = "polynomial" the best parameters are when cost equals 5 and degree equals 3 since in the model the cross validation error is the lowest at 0.08141026.
+
+When kernel = "radial" the best parameters are when cost equals 1 and gamma equals 1 since in the model the cross validation is the lowest at 0.07153846.
+
+**Part D**
+
+```{r}
+linear_svm_model = svm(mpg01 ~ . , data = Auto, kernel="linear", cost = 1)
+plot(linear_svm_model, Auto, mpg ~ cylinders)
+plot(linear_svm_model, Auto, mpg ~ displacement)
+plot(linear_svm_model, Auto, mpg ~ horsepower)
+plot(linear_svm_model, Auto, mpg ~ weight)
+plot(linear_svm_model, Auto, mpg ~ acceleration)
+plot(linear_svm_model, Auto, mpg ~ year)
+plot(linear_svm_model, Auto, mpg ~ origin)
+
+polynomial_svm_model = svm(mpg01 ~ . , data = Auto, kernel="polynomial", cost = 10, degree = 3)
+plot(polynomial_svm_model, Auto, mpg ~ cylinders)
+plot(polynomial_svm_model, Auto, mpg ~ displacement)
+plot(polynomial_svm_model, Auto, mpg ~ horsepower)
+plot(polynomial_svm_model, Auto, mpg ~ weight)
+plot(polynomial_svm_model, Auto, mpg ~ acceleration)
+plot(polynomial_svm_model, Auto, mpg ~ year)
+plot(polynomial_svm_model, Auto, mpg ~ origin)
+
+radial_svm_model = svm(mpg01 ~ . , data = Auto, kernel="radial", cost = 1, gamma = 1)
+plot(radial_svm_model, Auto, mpg ~ cylinders)
+plot(radial_svm_model, Auto, mpg ~ displacement)
+plot(radial_svm_model, Auto, mpg ~ horsepower)
+plot(radial_svm_model, Auto, mpg ~ weight)
+plot(radial_svm_model, Auto, mpg ~ acceleration)
+plot(radial_svm_model, Auto, mpg ~ year)
+plot(radial_svm_model, Auto, mpg ~ origin)
+```
+

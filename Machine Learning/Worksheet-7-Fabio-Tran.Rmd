@@ -1,0 +1,74 @@
+---
+title: 'Worksheet #7'
+author: "Fabio Tran"
+date: "3/4/2022"
+output: html_document
+---
+
+## Question 1
+
+```{r}
+library(ISLR2)
+fix(Wage)
+?Wage
+```
+
+## Question 2
+
+```{r}
+install.packages("tree", repos = "http://cran.us.r-project.org")
+library(tree)
+```
+
+## Question 3
+```{r}
+?tree
+?cv.tree
+```
+
+## Question 4
+```{r}
+tree.wage = tree(wage ~ ., Wage)
+```
+
+## Question 5
+```{r}
+summary(tree.wage)
+plot(tree.wage)
+text(tree.wage, pretty = 0)
+```
+
+## Question 6
+
+The most significant predictor is logwage. Something does seem wrong as logwage is the only predictor used in the tree. Every decision is based on the same predictor because logwage is directly used to calculate the wage. 
+
+## Question 7
+
+There are 7 terminal nodes. 
+
+```{r}
+tree.wage = tree(wage ~ . -logwage, Wage)
+summary(tree.wage)
+plot(tree.wage)
+text(tree.wage, pretty = 0)
+```
+
+## Question 8
+
+We should keep 7 terminal nodes as the cross-validation error is the lowest.
+
+```{r}
+cv.wage = cv.tree(tree.wage)
+plot(cv.wage$size, cv.wage$dev, type = 'b')
+```
+
+## Question 9
+
+The most significant predictor for education is wage. 
+
+```{r}
+tree.education = tree(education ~ . -logwage, Wage)
+summary(tree.education)
+plot(tree.education)
+text(tree.education, pretty = 0)
+```

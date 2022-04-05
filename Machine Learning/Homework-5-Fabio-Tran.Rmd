@@ -1,0 +1,102 @@
+---
+title: 'Homework #5'
+author: "Fabio Tran"
+date: "3/1/2022"
+output: html_document
+---
+
+## Question 1
+
+```{r}
+library("ISLR2")
+data("Hitters")
+```
+
+## Question 2
+
+```{r}
+  training = Hitters[-c(1), ]
+  test = Hitters[c(1), ]
+  linear_regression = lm(Runs ~ Hits, data = training)
+```
+
+## Question 3
+
+```{r}
+  input = data.frame(test$Hits)
+  colnames(input) = "Hits"
+  predicted_value = predict(linear_regression, newdata = input)
+  predicted_value
+```
+
+The first observation has 66 hits and 30 runs.
+
+The predicted runs for the first observation is 32.82947
+ 
+MSE(1) is (30 - 32.82947)^2 which is approximately 8.005900481.
+
+## Question 4
+
+**Part A and B**
+
+```{r}
+list = vector()
+for (i in 1:322){
+  training = Hitters[-c(i), ]
+  test = Hitters[c(i), ]
+  linear_regression = lm(Runs ~ Hits, data = training)
+  input = data.frame(test$Hits)
+  colnames(input) = "Hits"
+  predicted_value = predict(linear_regression, newdata = input)
+  actual_value = test$Runs
+  MSE = (actual_value - predicted_value)^2
+  list = c(list, MSE)
+}
+```
+
+## Question 5
+
+CV(322) =  102.2027
+```{r}
+mean(list)
+```
+
+## Question 6
+
+```{r}
+list = vector()
+for (i in 1:322){
+  training = Hitters[-c(i), ]
+  test = Hitters[c(i), ]
+  linear_regression = lm(Runs ~ Hits + RBI, data = training)
+  input = data.frame(test$Hits, test$RBI)
+  colnames(input) = c("Hits", "RBI")
+  predicted_value = predict(linear_regression, newdata = input)
+  actual_value = test$Runs
+  MSE = (actual_value - predicted_value)^2
+  list = c(list, MSE)
+}
+mean(list)
+```
+
+## Question 7
+
+```{r}
+list = vector()
+for (i in 1:322){
+  training = Hitters[-c(i), ]
+  test = Hitters[c(i), ]
+  linear_regression = lm(Runs ~ Hits + RBI + AtBat, data = training)
+  input = data.frame(test$Hits, test$RBI, test$AtBat)
+  colnames(input) = c("Hits", "RBI", "AtBat")
+  predicted_value = predict(linear_regression, newdata = input)
+  actual_value = test$Runs
+  MSE = (actual_value - predicted_value)^2
+  list = c(list, MSE)
+}
+mean(list)
+```
+
+## Question 8
+
+The third model with the predictors Hits, RBI, and AtBat has the lowest LOOCV error of 95.84374.

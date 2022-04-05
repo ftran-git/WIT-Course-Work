@@ -1,0 +1,245 @@
+---
+title: "Homework #3"
+author: "Fabio Tran"
+date: "1/29/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 1
+
+The p-value for TV suggests that the null hypothesis should be rejected. The given value is 0.0001 which is very small and less than 0.05. This tells us that the results are statistically significant. Therefore, TV is a good predictor for Sales. 
+
+The p-value for Radio suggests that the null hypothesis should be rejected. The given value is 0.0001 which is very small and less than 0.05. This tells us that the results are statistically significant. Therefore, Radio is a good predictor for Sales. 
+
+The p-value for Newspaper suggests that the null hypothesis should not be rejected. The given value is 0.8599 which is very large and greater than 0.05. This tells us that the results are not statistically significant. Therefore, we can not conclude that Newspaper is a good predictor of for Sales due to insufficient evidence.
+
+## Question 2
+
+**Part A**
+
+Least squares line: 
+```
+Salary = 50 + 20GPA + 0.07IQ + 35LEVEL + 0.01GPA x IQ + -10GPA x LEVEL
+```
+
+Regression Equation for College:
+```
+Salary = 50 + 20GPA + 0.07IQ + 35(1) + 0.01GPA x IQ + -10GPA x (1)
+
+Salary = 85 + 10GPA + 0.07IQ + 0.01GPA x IQ 
+
+```
+
+Regression Equation for High School:
+```
+Salary = 50 + 20GPA + 0.07IQ + 35(0) + 0.01GPA x IQ  + -10GPA x (0)
+
+Salary = 50 + 20GPA + 0.07IQ + 0.01GPA x IQ
+```
+
+Calculating Condition:
+```
+50 + 20GPA >= 85 + 10GPA
+
+20GPA >= 35 + 10GPA
+
+10 GPA >= 35
+
+GPA >= 3.5
+```
+
+Answer III, for a fixed value of IQ and GPA, high school graduates earn more, on average than college graduates provided that the GPA is high enough, is the right answer because on average high school graduates earn more (20GPA vs 10GPA) with the only condition being that GPA must be at least 3.5 or higher. 
+
+**Part B**
+
+Regression Equation for College:
+```
+Salary = 85 + 10GPA + 0.07IQ + 0.01GPA x IQ 
+```
+
+Calculations:
+```
+Salary = 85 + 10(4.0) + 0.07(110) + 0.01(4.0 x 110)
+Salary = 85 + 40 + 7.7 + 4.4
+Salary = 137.1
+```
+
+The predicted salary for a college graduate with IQ of 110 and GPA of 4.0 is 137,100 dollars. 
+
+**Part C**
+
+False, we can not use the size of the GPA/IQ coefficient to determine if it has an effect on the outcome (salary). We would have to perform hypothesis testing and examine the p-value to determine if the results are statistically significant or not. 
+
+## Question 3
+
+Reading Credit.csv and Removing Qualitative/Categorical Variables
+```{r}
+setwd("~/R Files/Data Sets")
+Credit = read.csv("Credit.csv")
+Credit = Credit[, -(7:10)]
+```
+
+**Part A**
+
+Linear Regression Model and Summary for Income:
+
+```{r, echo = FALSE}
+income_regression = lm(Balance ~ Income, data = Credit)
+plot(Credit$Income, Credit$Balance)
+abline(income_regression)
+summary(income_regression)
+```
+
+Linear Regression Model and Summary for Limit:
+
+```{r, echo = FALSE}
+limit_regression = lm(Balance ~ Limit, data = Credit)
+plot(Credit$Limit, Credit$Balance)
+abline(limit_regression)
+summary(limit_regression)
+```
+
+Linear Regression Model and Summary for Rating:
+
+```{r, echo = FALSE}
+rating_regression = lm(Balance ~ Rating, data = Credit)
+plot(Credit$Rating, Credit$Balance)
+abline(rating_regression)
+summary(rating_regression)
+```
+
+Linear Regression Model and Summary for Cards:
+
+```{r, echo = FALSE}
+cards_regression = lm(Balance ~ Cards, data = Credit)
+plot(Credit$Cards, Credit$Balance)
+abline(cards_regression)
+summary(cards_regression)
+```
+
+Linear Regression Model and Summary for Age:
+
+```{r, echo = FALSE}
+age_regression = lm(Balance ~ Age, data = Credit)
+plot(Credit$Age, Credit$Balance)
+abline(age_regression)
+summary(age_regression)
+```
+
+Linear Regression Model and Summary for Education:
+
+```{r, echo = FALSE}
+education_regression = lm(Balance ~ Education, data = Credit)
+plot(Credit$Education, Credit$Balance)
+abline(education_regression)
+summary(education_regression)
+```
+
+Results:
+
+The results for Income are statistically significant as the p-value is 2e^(-16) which is almost zero. The confidence interval for this coefficient is 6.0484 +- 0.5794.
+
+The results for Limit are statistically significant as the p-value is 2e^(-16) which is almost zero. The confidence interval for this coefficient is 1.716e-01 +- 5.066e-03.
+
+The results for Rating are statistically significant as the p-value is 2e^(-16) which is almost zero. The confidence interval for this coefficient is 2.56624 +- 0.07509.
+
+The results for Cards are not statistically significant as the p-value is 0.0842 which is very large. The confidence interval for this coefficient is 28.99 +- 16.74.
+
+The results for Age are not statistically significant as the p-value is 0.971 which is very large. The confidence interval for this coefficient is 0.04891 +- 1.33599.
+
+The results for Education are not statistically significant as the p-value is 0.872 which is very large. The confidence interval for this coefficient is -1.186 +- 7.374.
+
+The models that show a statistically significant association between the predictor and the response are Income, Limit, and Rating.
+
+**Part B**
+
+R-Squared is a measure of fit which indicates how much variation of the dependent variable is explained by independent variables. 
+
+The R-Squared value for the Income Regression Model is 0.215 therefore it means approximately 21 percent of the variance of Balance is explained by the predictor Income. 
+
+The R-Squared value for the Limit Regression Model is 0.7425 therefore it means approximately 74 percent of the variance of Balance is explained by the predictor Limit.
+
+The R-Squared value for the Rating Regression Model is 0.7458 therefore it means approximately 74 percent of the variance of Balance is explained by the predictor Rating.
+
+**Part C**
+
+```{r, echo = FALSE}
+multiple_regression = lm(Balance ~ Income + Limit + Rating + Cards + Age + Education, data = Credit)
+plot(multiple_regression)
+summary(multiple_regression)
+```
+Results:
+
+The predictors Income, Limit, and Rating all have low p-values less than 0.05 so we can reject the null hypothesis while the predictors Cards, Age, and Education all have high p-values greater than 0.05 so there is insufficient evidence to reject the null hypothesis. 
+
+**Part D**
+
+The results show that there is a difference between the simple and multiple regression coefficients because in a simple regression the slope only takes into consideration one predictor while in a multiple regression there are other predictors involved.
+
+```{r}
+#Univariate Coefficients
+univariate = lm(Balance ~ Income, data = Credit)$coefficient[2]
+univariate = append(univariate,lm(Balance ~ Limit, data = Credit)$coefficient[2] )
+univariate = append(univariate,lm(Balance ~ Rating, data = Credit)$coefficient[2] )
+univariate = append(univariate,lm(Balance ~ Cards, data = Credit)$coefficient[2] )
+univariate = append(univariate,lm(Balance ~ Age, data = Credit)$coefficient[2] )
+univariate = append(univariate,lm(Balance ~ Education, data = Credit)$coefficient[2] )
+
+#Multiple Coefficients
+multiple = (lm(Balance ~ Income + Limit + Rating + Cards + Age + Education, data = Credit))$coefficient[2:7]
+
+#Plotting
+plot(univariate, multiple, col = "red", xlab = "Univariate", ylab = "Multiple", main = "Univariate vs Multiple Regression Coefficients")
+```
+
+**Part E**
+
+#VIF Values
+```{r, echo = FALSE}
+multiple_regression = lm(Balance ~ Income + Limit + Rating + Cards + Age + Education, data = Credit)
+library(car)
+vif(multiple_regression)
+```
+A VIF value that exceeds 5 to 10 indicates a problematic amount of collinearity. The VIF value of Income, Cards, Age, and Education are low and close to the minimum value of one. However, the VIF value of Limit is 228.848290 and the VIF value of Rating is 230.612596 which suggests problematic amount of collinearity.
+
+#VIF Values (excluding Limit)
+```{r, echo = FALSE}
+multiple_regression = lm(Balance ~ Income + Rating + Cards + Age + Education, data = Credit)
+library(car)
+vif(multiple_regression)
+```
+Collinearity undermines the statistical significance of a predictor variable. To combat this problem that is present in the current model, we can drop one of the predictors with a high VIF value. In this case, we can drop Limit to improve the model. When we do this, the VIF values for all predictors are closer to the minimum value of one therefore improving the accuracy of the estimates of the regression coefficients in this model.
+
+**Part F**
+
+```{r, echo = FALSE}
+income_regression1 = lm(Balance ~ Income, data = Credit)
+income_regression2 = lm(Balance ~ Income + I(Income^2), data = Credit)
+anova(income_regression1, income_regression2)
+
+limit_regression1 = lm(Balance ~ Limit, data = Credit)
+limit_regression2 = lm(Balance ~ Limit + I(Limit^2), data = Credit)
+anova(limit_regression1, limit_regression2)
+
+rating_regression1 = lm(Balance ~ Rating, data = Credit)
+rating_regression2 = lm(Balance ~ Rating + I(Rating^2), data = Credit)
+anova(rating_regression1, rating_regression2)
+
+cards_regression1 = lm(Balance ~ Cards, data = Credit)
+cards_regression2 = lm(Balance ~ Cards + I(Cards^2), data = Credit)
+anova(cards_regression1, cards_regression2)
+
+age_regression1 = lm(Balance ~ Age, data = Credit)
+age_regression2 = lm(Balance ~ Age + I(Age^2), data = Credit)
+anova(age_regression1, age_regression2)
+
+education_regression1 = lm(Balance ~ Education, data = Credit)
+education_regression2 = lm(Balance ~ Education + I(Education^2), data = Credit)
+anova(education_regression1, education_regression2)
+```
+
+There is evidence of non-linear association between the predictor Limit and the response Balance as well as the predictor Rating and the response Balance. Using the anova function which performs a hypothesis test comparing the original and new model, the tests for Limit and Rating yielded p-values less than 0.05 which indicates statistical significance. Therefore the new model with the quadratic term is a better fit. The other predictors had high p-values during the anova hypothesis test which suggests that a non-linear association is not present and that their quadratic models are not better than their original.

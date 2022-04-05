@@ -1,0 +1,177 @@
+---
+title: 'Worksheet #5'
+author: "Fabio Tran"
+date: "2/11/2022"
+output:
+  html_document: default
+---
+
+## Question 1
+
+```{r}
+library("ISLR2")
+data("Credit")
+dim(Credit)
+names(Credit)
+```
+
+## Question 2
+
+```{r}
+my_logist_regr = glm(Student ~ Income + Balance + Cards, data = Credit, family = binomial)
+summary(my_logist_regr)
+```
+
+## Question 3
+
+With 95% confidence, the variables that have strong evidence of a relationship with student status are Income and Balance. 
+```{r}
+my_logist_regr = glm(Student ~ Income + Balance, data = Credit, family = binomial)
+summary(my_logist_regr)
+```
+
+## Question 4
+
+```{r}
+newdata = data.frame(Balance = c(1200), Income = c(23000))
+predict(my_logist_regr, newdata, type = "response")
+```
+
+## Question 5
+
+```{r}
+my_prob_results = predict(my_logist_regr, Credit, type = "response")
+```
+
+## Question 6
+
+```{r}
+my_classification = ifelse(my_prob_results > 0.50, "Yes", "No")
+```
+
+## Question 7
+
+```{r}
+my_classification
+```
+
+## Question 8
+
+```{r}
+table(my_classification, Credit$Student)
+```
+
+## Question 9
+
+The training error rate is 39/400 which is 9.75 percent. 
+
+## Question 10
+
+```{r}
+mean(my_classification != Credit$Student)
+
+```
+
+## Question 11
+
+The best rate I was able to get by lowering the probability threshold was 7.75 percent. 
+```{r}
+my_classification = ifelse(my_prob_results > 0.35, "Yes", "No")
+table(my_classification, Credit$Student)
+mean(my_classification != Credit$Student)
+```
+
+## Question 12
+
+```{r}
+v = sample(1:400, 200)
+v = sort(v)
+```
+
+## Question 13
+
+```{r}
+Credit.train = Credit[v, ]
+Credit.test = Credit[-v, ]
+```
+
+## Question 14
+
+```{r}
+my_logist_regr = glm(Student ~ Income + Balance, data = Credit.train, family = binomial)
+summary(my_logist_regr)
+```
+
+## Question 15
+
+```{r}
+my_prob_results.train = predict(my_logist_regr, Credit.train, type = "response")
+my_prob_results.test = predict(my_logist_regr, Credit.test, type = "response")
+```
+
+## Question 16
+
+```{r}
+my_classification_train = ifelse(my_prob_results.train > 0.50, "Yes", "No")
+mean(my_classification_train != Credit$Student)
+my_classification_test = ifelse(my_prob_results.test > 0.50, "Yes", "No")
+mean(my_classification_test != Credit$Student)
+```
+
+## Question 17
+
+With a threshold of 0.50, for the training error rate I got `r mean(my_classification_train != Credit$Student)` and for testing error rate I got `r mean(my_classification_test != Credit$Student)`. 
+```{r}
+my_classification_train = ifelse(my_prob_results.train > 0.35, "Yes", "No")
+mean(my_classification_train != Credit$Student)
+my_classification_test = ifelse(my_prob_results.test > 0.35, "Yes", "No")
+mean(my_classification_test != Credit$Student)
+```
+When I lowered the threshold to 0.35, for the training error rate I got `r mean(my_classification_train != Credit$Student)` and for testing error rate I got `r mean(my_classification_test != Credit$Student)`.
+
+## Question 18
+
+```{r}
+library(class)
+standardized_credit = scale(Credit[, c("Income", "Balance")])
+set.seed(1)
+v = sort(sample(1:400, 200))
+train.X = standardized_credit[v, ]
+test.X = standardized_credit[-v, ]
+train.Y = Credit$Student[v]
+test.Y = Credit$Student[-v]
+set.seed(1)
+knn.pred = knn(train.X, test.X, train.Y, k = 3)
+m = mean(test.Y != knn.pred)
+print(m)
+```
+
+## Question 19
+
+After trying various values of K, a value of 5 is a good choice as it yields a test error rate of 9 percent. 
+```{r}
+library(class)
+standardized_credit = scale(Credit[, c("Income", "Balance")])
+set.seed(1)
+v = sort(sample(1:400, 200))
+train.X = standardized_credit[v, ]
+test.X = standardized_credit[-v, ]
+train.Y = Credit$Student[v]
+test.Y = Credit$Student[-v]
+set.seed(1)
+knn.pred = knn(train.X, test.X, train.Y, k = 5)
+m = mean(test.Y != knn.pred)
+print(m)
+```
+
+## Question 20
+
+The prediction for that person being a student is no. 
+```{r}
+newTest.X = data.frame(Income = c(22000), Balance = c(1200))
+knn.pred = knn(train.X, newTest.X, train.Y, k = 5)
+knn.pred
+```
+
+
+
