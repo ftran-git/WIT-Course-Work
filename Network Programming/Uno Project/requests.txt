@@ -1,0 +1,8 @@
+# CONNECT is used for a client attempting to connect to a host
+# the client may use the Username header to pick a screen name.
+CONNECT
+Username: username
+
+# ACCEPTED acknowledges a user's connect request and confirms their place in
+# the game.
+ACCEPTED
