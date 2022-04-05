@@ -3,13 +3,11 @@
  *
  * @author Fabio Tran
  */
-// extends Application for GUI
 public class BlackjackMain
     {
 
     public static void main( String[] args )
         {
-         //launch(args);
 
         BlackjackEvents newGame = new BlackjackEvents() ;
         newGame.gameInstructions() ;
@@ -34,17 +32,5 @@ public class BlackjackMain
         while ( newGame.newRound() ) ;
 
         }
-
-// @Override
-// public void start(Stage primaryStage) throws Exception {
-//
-// Parent root = FXMLLoader.load(getClass().getResource("BlackjackGUI.fxml"));
-// Scene scene = new Scene(root);
-// primaryStage.setTitle("MyExampleApp");
-// primaryStage.setScene(scene);
-// primaryStage.show();
-
-
-// }
 
     }
