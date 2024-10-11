@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "596415125207",
+    "project_id": "icebreaker-3112d",
+    "storage_bucket": "icebreaker-3112d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596415125207:android:f64aa0ee52bf7e19518292",
+        "android_client_info": {
+          "package_name": "com.example.seniorproject_icebreaker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596415125207-nmh53rbhfjpn9g609hki8lo4f650dbmm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.seniorproject_icebreaker",
+            "certificate_hash": "65b7b89f9092b27658e7d89fc75d74587072d734"
+          }
+        },
+        {
+          "client_id": "596415125207-5gujkvaa5uaagvf9ck9o4q578bmrlg98.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv87CociKU2Aj-nRp3HFYuIkFZzm4V_nI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596415125207-5gujkvaa5uaagvf9ck9o4q578bmrlg98.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
